@@ -87,6 +87,31 @@ function DegreesToDirection(val)
     return dir_sets[math.round((val + math.pi) / math.pi * 8) + 1]
 end
 
+local element_colors = {
+    fire      = '\\cs(255,80,0)',
+    ice       = '\\cs(100,200,255)',
+    wind      = '\\cs(100,220,100)',
+    earth     = '\\cs(190,130,60)',
+    lightning = '\\cs(255,240,0)',
+    water     = '\\cs(0,140,255)',
+    light     = '\\cs(255,255,180)',
+    dark      = '\\cs(170,0,230)',
+    slashing  = '\\cs(220,100,100)',
+    blunt     = '\\cs(180,160,130)',
+    piercing  = '\\cs(200,200,130)',
+}
+
+local function colorize_elements(str)
+    if not str or str == '' then return '' end
+    local parts = {}
+    for elem in str:gmatch('[^,]+') do
+        local trimmed = elem:match('^%s*(.-)%s*$')
+        local color = element_colors[trimmed:lower()]
+        parts[#parts+1] = color and (color..trimmed..'\\cr') or trimmed
+    end
+    return table.concat(parts, ', ')
+end
+
 function get_db(target, zones, level)
     local query = 'SELECT * FROM "monster" WHERE name = "'..target..'" AND zone = "'..zones..'"'
     local MOB_infobar = {}
@@ -98,10 +123,10 @@ function get_db(target, zones, level)
                 MOB_infobar.family = family or ''
                 MOB_infobar.job = job or ''
                 MOB_infobar.levelrange = levelmin and levelmax and levelmin.."-"..levelmax or ''
-                MOB_infobar.weakness = weakness or ''
-                MOB_infobar.resistances = resistances or ''
-                MOB_infobar.immunities = immunities or ''
-                MOB_infobar.drops = drops or ''
+                MOB_infobar.weakness = colorize_elements(weakness)
+                MOB_infobar.resistances = colorize_elements(resistances)
+                MOB_infobar.immunities = colorize_elements(immunities)
+                MOB_infobar.drops = drops and drops:gsub('%s*,%s*', '\n') or ''
                 MOB_infobar.stolen = stolen or ''
                 MOB_infobar.spawns = spawn or ''
                 MOB_infobar.spawntime = spawntime or ''
