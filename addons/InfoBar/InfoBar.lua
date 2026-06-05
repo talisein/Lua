@@ -142,16 +142,16 @@ function get_db(target, zones, level)
                 MOB_infobar.isnm = isnm == 1 and 'NM' or 'No NM'
                 MOB_infobar.isfishing = isfishing == 1 and 'F' or 'NF'
                 local detect = L{
-                    sight == 1 and 'S' or '',
-                    sound == 1 and 'H' or '',
-                    magic == 1 and 'M' or '',
-                    lowhp == 1 and 'HP' or '',
-                    healing == 1 and 'R' or '',
-                    ts == 1 and 'TS' or '',
-                    th == 1 and 'TH' or '',
-                    scent == 1 and 'Sc' or '',
+                    sight   == 1 and '\\cs(255,220,0)Sight\\cr'        or '',
+                    sound   == 1 and '\\cs(100,180,255)Sound\\cr'       or '',
+                    magic   == 1 and '\\cs(200,100,255)Magic\\cr'       or '',
+                    lowhp   == 1 and '\\cs(255,80,80)Low HP\\cr'        or '',
+                    healing == 1 and '\\cs(100,220,100)Resting\\cr'     or '',
+                    ts      == 1 and '\\cs(255,160,0)True Sight\\cr'    or '',
+                    th      == 1 and '\\cs(50,150,255)True Hearing\\cr' or '',
+                    scent   == 1 and '\\cs(180,150,100)Scent\\cr'       or '',
                 }
-                MOB_infobar.detect = detect:filter(-''):concat(',')
+                MOB_infobar.detect = detect:filter(-''):concat(', ')
             end
         end
     end
